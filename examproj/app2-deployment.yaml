@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: app2
+  namespace: rahmaexam
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: app2
+
+  template:
+    metadata:
+      labels:
+        app: app2
+
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:latest
+
+          ports:
+            - containerPort: 80
+
+          volumeMounts:
+            - name: app2-content
+              mountPath: /usr/share/nginx/html/index.html
+              subPath: index.html
+
+      volumes:
+        - name: app2-content
+          configMap:
+            name: app2-config

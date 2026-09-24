@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+  creationTimestamp: "2026-09-07T07:40:19Z"
+  generation: 1
+  labels:
+    app: app2
+  name: app2
+  namespace: asus
+  resourceVersion: "214019"
+  uid: 870fe91e-e0a8-424f-b0c3-b1c532f106e9
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 3
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: app2
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: app2
+    spec:
+      containers:
+      - image: nginx:latest
+        imagePullPolicy: Always
+        name: nginx
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+          - name: html
+            mountPath: /usr/share/nginx/html
+      volumes:
+      - name: html
+        configMap:
+          name: app2-cm
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status:
+  availableReplicas: 3
+  conditions:
+  - lastTransitionTime: "2026-09-07T07:40:31Z"
+    lastUpdateTime: "2026-09-07T07:40:31Z"
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  - lastTransitionTime: "2026-09-07T07:40:19Z"
+    lastUpdateTime: "2026-09-07T07:40:31Z"
+    message: ReplicaSet "app1-dfb8bc489" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  observedGeneration: 1
+  readyReplicas: 3
+  replicas: 3
+  terminatingReplicas: 0
+  updatedReplicas: 3
